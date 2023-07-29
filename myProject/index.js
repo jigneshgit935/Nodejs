@@ -1,26 +1,21 @@
-const http = require('http');
+const express = require('express');
+
+const app = express();
 
 const port = 8000;
 
-const server = http.createServer((req, res) => {
-  if (req.url == '/') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.write('<h1>Home</h1>');
-    res.end();
-  } else if (req.url == '/about') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.write('<h1>About</h1>');
-    res.end();
-  } else {
-    res.statusCode = 404;
-    res.setHeader('Content-Type', 'text/html');
-    res.write('<h1>404 NOT FOUND</h1>');
-    res.end();
-  }
+app.get('/', (req, res) => {
+  res.status(200).send('Hello world');
 });
 
-server.listen(port, () => {
-  console.log(`Server is running at ${port}`);
+app.get('/about', (req, res) => {
+  res.status(200).send('About Page');
+});
+
+app.use((req, res, next) => {
+  res.status(404).send('<h1>Page not found</h1>');
+});
+
+app.listen(port, () => {
+  console.log(`Server is running at port ${port}`);
 });
